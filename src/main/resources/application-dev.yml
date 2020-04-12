@@ -39,12 +39,15 @@ spring:
   #default-encoding: UTF-8
 
   # jpa配置
+
   jpa:
     hibernate:
-      # update ： 每次启动更新数据表  ， create： 每次启动建表，表存在则清空数据  , drop : 每次结束 清空表 , validate : 每次启动校验实体类和数据表内容不符报错
       ddl-auto: update
-    # 展示sql
     show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 
 # mybatis配置
 mybatis:
