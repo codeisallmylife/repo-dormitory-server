@@ -2,10 +2,12 @@ package com.dormitory.controller.account;
 
 import com.dormitory.dao.account.*;
 import com.dormitory.dto.AjaxResponse;
+import com.dormitory.model.AbstractModel;
 import com.dormitory.model.account.*;
 import com.dormitory.model.info.ClassInfo;
 import com.dormitory.model.info.StudentInfo;
 import com.dormitory.model.info.TeacherInfo;
+import com.dormitory.model.log.SignLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 此类为测试鉴权内容写入，执行时按照接口前注释所写的step顺序调用
@@ -47,6 +50,18 @@ public class TestController {
 
     @Autowired
     private TeacherInfoRepository teacherInfoRepository;
+
+    @Autowired
+    private SignLogRepository signLogRepository;
+
+    //step 0 测试dao
+    @RequestMapping(value = "/testDao")
+    public String testDao(){
+        Role r=roleRepository.findByName("学生");
+        System.out.println("-=-=学生："+r);
+
+        return "testDao运行结束";
+    }
 
     //step 1
     @RequestMapping(value = "/testCreateRole")
@@ -209,6 +224,7 @@ public class TestController {
         List<SysRoleAction> sysRoleActions = sysRoleActionRepository.findAll();
         List<Role> roles = roleRepository.findAll();
 
+
         //分出角色
         Role admin = new Role();
         Role stu = new Role();
@@ -231,6 +247,8 @@ public class TestController {
         studentInfo.setGender(1);
         studentInfo.setDomNumber(1);
         studentInfo.setBedNumber(1);
+        studentInfo.setBuilding("1");
+        studentInfo.setStudentCode("1");
         studentInfo.setClassInfo(classInfoRepository.getOne(1));
         StudentInfo s = studentInfoRepository.save(studentInfo);
 
@@ -240,6 +258,7 @@ public class TestController {
         user.setPassword("123");
         user.setPhone("123");
         user.setStudentInfo(s);
+        user.setClassInfo(classInfoRepository.findOne(1));
 
         userRepository.save(user);
 
@@ -256,6 +275,8 @@ public class TestController {
         user1.setPassword("1234");
         user1.setPhone("1234");
         user1.setTeacherInfo(t);
+        user1.setClassInfo(classInfoRepository.findOne(1));
+
 
         userRepository.save(user1);
 
@@ -267,6 +288,40 @@ public class TestController {
         adminUser.setPhone("12345");
 
         userRepository.save(adminUser);
+        return json;
+    }
+
+
+    //step7
+    @RequestMapping(value = "/createSignLog")
+    public AjaxResponse createSignLog(){
+        AjaxResponse  json=AjaxResponse.buildFailResponse();
+
+        List<SignLog> signLogs=new ArrayList<>();
+//        打卡记录1
+        SignLog signLog=new SignLog();
+        signLog.setClockInDay(17);
+        signLog.setClockInMonth(4);
+        signLog.setClockInYear(2020);
+//        打卡记录2
+        SignLog signLog2=new SignLog();
+        signLog2.setClockInDay(18);
+        signLog2.setClockInMonth(4);
+        signLog2.setClockInYear(2020);
+
+        signLogs.add(signLog);
+        signLogs.add(signLog2);
+
+//        获取学生ID=1
+        StudentInfo studentInfo=studentInfoRepository.getOne(1);
+        signLog.setStudentInfo(studentInfo);
+        signLog2.setStudentInfo(studentInfo);
+
+
+        signLogRepository.save(signLogs);
+
+
+
         return json;
     }
 

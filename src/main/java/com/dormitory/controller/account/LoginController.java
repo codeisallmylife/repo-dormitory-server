@@ -27,7 +27,7 @@ import javax.servlet.http.Cookie;
 
 import static com.dormitory.util.CodeConst.*;
 @RestController
-@RequestMapping(value = "/account" , produces = {"application/json;charset=UTF-8"} , method = RequestMethod.POST)
+@RequestMapping(value = "/LoginController" , produces = {"application/json;charset=UTF-8"} , method = RequestMethod.POST)
 public class LoginController {
 
     @Autowired

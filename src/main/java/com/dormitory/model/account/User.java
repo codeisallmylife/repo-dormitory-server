@@ -33,7 +33,6 @@ public class User extends AbstractModel {
     private Permission permission;
 
     @OneToOne
-    @JoinColumn(nullable=false)
     private StudentInfo studentInfo;
 
     @OneToOne

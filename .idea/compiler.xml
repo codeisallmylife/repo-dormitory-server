@@ -9,5 +9,8 @@
         <module name="repo-dormitory-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="repo-dormitory-server" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
