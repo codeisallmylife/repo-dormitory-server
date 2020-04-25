@@ -36,7 +36,7 @@ public class StudentInfo extends AbstractModel {
     @ManyToOne
     private ClassInfo classInfo;
 
-    @OneToMany(mappedBy = "studentInfo",fetch = FetchType.EAGER)
-    private Set<SignLog> signLogs;
+//    @OneToMany(mappedBy = "studentInfo",fetch = FetchType.EAGER)
+//    private Set<SignLog> signLogs;
 
 }

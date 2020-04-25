@@ -56,16 +56,14 @@ public class RegisterController {
         String password=param.getString("password");
         String confirmPass=param.getString("confirmPass");
 
-        System.out.println("-=-=-=-=-=-=-=-=-=- ");
-        System.out.println("-=-=-=-=-=-=-=-=-=- "+studentInfoRepository.findByStudentCode(studentCode));
-        System.out.println("-=-=-=-=-=-=-=-=-=- ");
 
+        List<StudentInfo> li=studentInfoRepository.findByStudentCodeIs(studentCode);
 
-        if (password.equals(confirmPass)){
+        //判断密码与确认密码一致、学号未被注册过。
+        if (password.equals(confirmPass) && li.size()==0){
             registerService.studentRegister(stuName,gender,studentCode,phone,classInfoId,building,domNumber,bedNumber,password,confirmPass);
             return true;
         }
-
 
         return false;
     }

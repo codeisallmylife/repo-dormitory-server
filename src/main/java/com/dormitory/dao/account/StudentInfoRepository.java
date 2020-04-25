@@ -6,9 +6,12 @@ import com.dormitory.model.info.StudentInfo;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface StudentInfoRepository extends BaseRepository<StudentInfo> {
 
-    @Query("from StudentInfo si where si.studentCode = :studentCode")
-    StudentInfo findByStudentCode(@Param("studentCode") String studentCode);
+
+    List<StudentInfo> findByStudentCodeIs(String studentCode);
+
 
 }

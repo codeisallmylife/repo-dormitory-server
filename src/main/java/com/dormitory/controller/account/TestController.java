@@ -90,7 +90,33 @@ public class TestController {
 
         return json;
     }
+    //step 2
+    @RequestMapping(value = "/testCreateSysRoleAction")
+    public AjaxResponse testCreateSysRoleAction(){
+        AjaxResponse json = AjaxResponse.buildSuccessResponse();
 
+        List<SysRoleAction> sysRoleActions = new ArrayList<>();
+
+        SysRoleAction sysRoleAction = new SysRoleAction();
+        sysRoleAction.setActionType(SysRoleAction.ActionType.API_ALLOW_ADMIN);
+        sysRoleAction.setActionGroup(SysRoleAction.ActionGroup.API_ACCOUNT);
+
+        SysRoleAction sysRoleAction1 = new SysRoleAction();
+        sysRoleAction1.setActionType(SysRoleAction.ActionType.API_ALLOW_STU);
+        sysRoleAction1.setActionGroup(SysRoleAction.ActionGroup.API_ACCOUNT);
+
+        SysRoleAction sysRoleAction2 = new SysRoleAction();
+        sysRoleAction2.setActionType(SysRoleAction.ActionType.API_ALLOW_TEACH);
+        sysRoleAction2.setActionGroup(SysRoleAction.ActionGroup.API_ACCOUNT);
+
+        sysRoleActions.add(sysRoleAction);
+        sysRoleActions.add(sysRoleAction1);
+        sysRoleActions.add(sysRoleAction2);
+
+        sysRoleActionRepository.save(sysRoleActions);
+
+        return json;
+    }
     //step 3
     @RequestMapping(value = "/testCreateRoleAction")
     public AjaxResponse testCreateRoleAction(){
@@ -159,33 +185,7 @@ public class TestController {
         return json;
     }
 
-    //step 2
-    @RequestMapping(value = "/testCreateSysRoleAction")
-    public AjaxResponse testCreateSysRoleAction(){
-        AjaxResponse json = AjaxResponse.buildSuccessResponse();
 
-        List<SysRoleAction> sysRoleActions = new ArrayList<>();
-
-        SysRoleAction sysRoleAction = new SysRoleAction();
-        sysRoleAction.setActionType(SysRoleAction.ActionType.API_ALLOW_ADMIN);
-        sysRoleAction.setActionGroup(SysRoleAction.ActionGroup.API_ACCOUNT);
-
-        SysRoleAction sysRoleAction1 = new SysRoleAction();
-        sysRoleAction1.setActionType(SysRoleAction.ActionType.API_ALLOW_STU);
-        sysRoleAction1.setActionGroup(SysRoleAction.ActionGroup.API_ACCOUNT);
-
-        SysRoleAction sysRoleAction2 = new SysRoleAction();
-        sysRoleAction2.setActionType(SysRoleAction.ActionType.API_ALLOW_TEACH);
-        sysRoleAction2.setActionGroup(SysRoleAction.ActionGroup.API_ACCOUNT);
-
-        sysRoleActions.add(sysRoleAction);
-        sysRoleActions.add(sysRoleAction1);
-        sysRoleActions.add(sysRoleAction2);
-
-        sysRoleActionRepository.save(sysRoleActions);
-
-        return json;
-    }
 
     //step 4
     @RequestMapping(value = "/testCreatePermission")
