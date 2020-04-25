@@ -5,15 +5,17 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "teach_info")
 public class TeacherInfo extends AbstractModel {
 
-    @NotNull
-    private String teacher_id;
+//    @ManyToOne
+//    private ClassInfo classInfo;
 
-    @ManyToOne
-    private ClassInfo classInfo;
+    @OneToMany
+    private Set<ClassInfo> classInfos;
 }
+

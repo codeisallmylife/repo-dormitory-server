@@ -1,14 +1,12 @@
 package com.dormitory.controller.account;
 
 import com.alibaba.fastjson.JSONObject;
-import com.dormitory.dao.account.ClassInfoRepository;
-import com.dormitory.dao.account.RoleRepository;
-import com.dormitory.dao.account.StudentInfoRepository;
-import com.dormitory.dao.account.UserRepository;
+import com.dormitory.dao.account.*;
 import com.dormitory.model.account.Role;
 import com.dormitory.model.account.User;
 import com.dormitory.model.info.ClassInfo;
 import com.dormitory.model.info.StudentInfo;
+import com.dormitory.model.info.TeacherInfo;
 import com.dormitory.service.account.RegisterService;
 import com.dormitory.service.account.impl.RegisterServiceImpl;
 import org.apache.log4j.Logger;
@@ -38,6 +36,12 @@ public class RegisterController {
     @Autowired
     StudentInfoRepository studentInfoRepository;
 
+    @Autowired
+    TeacherInfoRepository teacherInfoRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     //学生注册
     @RequestMapping(value = "/stuRegister")
     public boolean stuRegister(@RequestBody JSONObject param, HttpServletRequest request, HttpServletResponse respons){
@@ -63,6 +67,27 @@ public class RegisterController {
         if (password.equals(confirmPass) && li.size()==0){
             registerService.studentRegister(stuName,gender,studentCode,phone,classInfoId,building,domNumber,bedNumber,password,confirmPass);
             return true;
+        }
+
+        return false;
+    }
+
+    //教师注册
+    @RequestMapping(value = "/teacherRegister")
+    public boolean teacherRegister(@RequestBody JSONObject param, HttpServletRequest request, HttpServletResponse respons){
+        logger.info("-= enter teacherRegister =-");
+
+        //密钥
+        String cipher=param.getString("cipher");
+        String teacherName=param.getString("teacherName");
+        String phone=param.getString("phone");
+        String password=param.getString("password");
+        String confirmPass=param.getString("confirmPass");
+
+        List<User> li=userRepository.findByPhoneIs(phone);
+
+        if(password.equals(confirmPass) && cipher.equals("qaz123") && li.size()==0){
+            registerService.teacherRegister(teacherName,phone,password,confirmPass);
         }
 
         return false;

@@ -76,7 +76,9 @@ public class RegisterServiceImpl extends BaseServiceImpl implements RegisterServ
     }
 
     @Override
-    public int teacherRegister() {
+    public int teacherRegister(String teacherName,String phone,String password, String confirmPass) {
+
+
         return 0;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -262,10 +263,12 @@ public class TestController {
 
         userRepository.save(user);
 
+        Set<ClassInfo> classInfos=new HashSet<>();
+        classInfos.add(classInfoRepository.getOne(1));
+
         //教师账号
         TeacherInfo teacherInfo = new TeacherInfo();
-        teacherInfo.setTeacher_id("100001");
-        teacherInfo.setClassInfo(classInfoRepository.getOne(1));
+        teacherInfo.setClassInfos(classInfos);
 
         TeacherInfo t = teacherInfoRepository.save(teacherInfo);
 

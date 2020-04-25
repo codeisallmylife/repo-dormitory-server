@@ -10,6 +10,6 @@ public interface RegisterService {
                         String phone, int classInfoId, String building,
                         int domNumber, int bedNumber, String password, String confirmPass);
 
-    int teacherRegister();
+    int teacherRegister(String teacherName,String phone,String password, String confirmPass);
 
 }
