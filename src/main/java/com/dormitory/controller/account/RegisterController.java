@@ -23,6 +23,8 @@ import java.util.List;
 
 /**
  * 注册
+ *
+ * 成功返回true。失败返回false
  */
 @RestController
 @RequestMapping(value = "/RegisterController", produces = {"application/json;charset=UTF-8"} , method = RequestMethod.POST)
@@ -88,6 +90,7 @@ public class RegisterController {
 
         if(password.equals(confirmPass) && cipher.equals("qaz123") && li.size()==0){
             registerService.teacherRegister(teacherName,phone,password,confirmPass);
+            return true;
         }
 
         return false;

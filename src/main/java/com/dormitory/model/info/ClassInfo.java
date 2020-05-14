@@ -17,4 +17,7 @@ public class ClassInfo extends AbstractModel {
     @NotBlank
     private String className;
 
+    @ManyToOne
+    private TeacherInfo teacherInfo;
+
 }

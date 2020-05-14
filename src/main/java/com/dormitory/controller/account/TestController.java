@@ -2,11 +2,13 @@ package com.dormitory.controller.account;
 
 import com.dormitory.dao.account.*;
 import com.dormitory.dto.AjaxResponse;
+import com.dormitory.dto.SessionVO;
 import com.dormitory.model.AbstractModel;
 import com.dormitory.model.account.*;
 import com.dormitory.model.info.ClassInfo;
 import com.dormitory.model.info.StudentInfo;
 import com.dormitory.model.info.TeacherInfo;
+import com.dormitory.model.log.AskForLeave;
 import com.dormitory.model.log.SignLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.dormitory.util.CodeConst.SESSION_VO_STR;
 
 /**
  * 此类为测试鉴权内容写入，执行时按照接口前注释所写的step顺序调用
@@ -54,6 +59,13 @@ public class TestController {
 
     @Autowired
     private SignLogRepository signLogRepository;
+
+    @Autowired
+    private AskForLeaveRepository askForLeaveRepository;
+
+    @Autowired
+    private HttpServletRequest request;
+
 
     //step 0 测试dao
     @RequestMapping(value = "/testDao")
@@ -210,7 +222,7 @@ public class TestController {
         AjaxResponse json = AjaxResponse.buildSuccessResponse();
 
         ClassInfo classInfo = new ClassInfo();
-        classInfo.setClassName("一班");
+        classInfo.setClassName("二班");
 
         classInfoRepository.save(classInfo);
 
@@ -263,12 +275,15 @@ public class TestController {
 
         userRepository.save(user);
 
-        Set<ClassInfo> classInfos=new HashSet<>();
-        classInfos.add(classInfoRepository.getOne(1));
+//        Set<ClassInfo> classInfos=new HashSet<>();
+//        classInfos.add(classInfoRepository.getOne(1));
 
         //教师账号
         TeacherInfo teacherInfo = new TeacherInfo();
-        teacherInfo.setClassInfos(classInfos);
+
+        classInfoRepository.getOne(1).setTeacherInfo(teacherInfo);
+//        teacherInfo.setClassInfos(classInfos);
+
 
         TeacherInfo t = teacherInfoRepository.save(teacherInfo);
 
@@ -301,31 +316,71 @@ public class TestController {
         AjaxResponse  json=AjaxResponse.buildFailResponse();
 
         List<SignLog> signLogs=new ArrayList<>();
+
+        //        获取学生ID=1
+        StudentInfo studentInfo=studentInfoRepository.getOne(1);
+
 //        打卡记录1
         SignLog signLog=new SignLog();
         signLog.setClockInDay(17);
         signLog.setClockInMonth(4);
         signLog.setClockInYear(2020);
+        signLog.setStudentInfo(studentInfo);
+
 //        打卡记录2
         SignLog signLog2=new SignLog();
         signLog2.setClockInDay(18);
         signLog2.setClockInMonth(4);
         signLog2.setClockInYear(2020);
+        signLog2.setStudentInfo(studentInfo);
 
         signLogs.add(signLog);
         signLogs.add(signLog2);
-
-//        获取学生ID=1
-        StudentInfo studentInfo=studentInfoRepository.getOne(1);
-        signLog.setStudentInfo(studentInfo);
-        signLog2.setStudentInfo(studentInfo);
-
 
         signLogRepository.save(signLogs);
 
 
 
         return json;
+    }
+
+    //step 8
+    @RequestMapping(value = "/createAskForLeave")
+    public AjaxResponse createAskForLeave(){
+        AjaxResponse  json=AjaxResponse.buildFailResponse();
+
+        SessionVO sessionVO=getSvo(request);
+        System.out.println("+++++:  "+sessionVO);
+
+        List<AskForLeave> askForLeaves=new ArrayList<>();
+
+        AskForLeave askForLeave=new AskForLeave();
+
+        askForLeave.setBeginYear(2020);
+        askForLeave.setBeginMonth(5);
+        askForLeave.setBeginDay(7);
+        askForLeave.setLeaveReasonText("go home");
+        askForLeave.setReplyText("admit");
+        askForLeave.setIsHandle(1);
+        askForLeave.setEndYear(2020);
+        askForLeave.setEndMonth(5);
+        askForLeave.setEndDay(8);
+
+        ClassInfo claz=classInfoRepository.getOne(userRepository.getOne(sessionVO.getSvoId()).getStudentInfo().getClassInfo().getId());
+
+        askForLeave.setStudentInfo(userRepository.getOne(sessionVO.getSvoId()).getStudentInfo());
+        askForLeave.setTeacherInfo(claz.getTeacherInfo());
+
+        askForLeaves.add(askForLeave);
+
+        askForLeaveRepository.save(askForLeaves);
+
+
+        return json;
+    }
+
+    public SessionVO getSvo(HttpServletRequest request) {
+        return (SessionVO) request.getSession().getAttribute(SESSION_VO_STR);
     }
 
 

@@ -1,12 +1,10 @@
 package com.dormitory.service.account.impl;
 
-import com.dormitory.dao.account.ClassInfoRepository;
-import com.dormitory.dao.account.RoleRepository;
-import com.dormitory.dao.account.StudentInfoRepository;
-import com.dormitory.dao.account.UserRepository;
+import com.dormitory.dao.account.*;
 import com.dormitory.model.account.User;
 import com.dormitory.model.info.ClassInfo;
 import com.dormitory.model.info.StudentInfo;
+import com.dormitory.model.info.TeacherInfo;
 import com.dormitory.service.BaseServiceImpl;
 import com.dormitory.service.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,9 @@ public class RegisterServiceImpl extends BaseServiceImpl implements RegisterServ
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    TeacherInfoRepository teacherInfoRepository;
 
     @Override
     public int studentRegister(String stuName, int gender, String studentCode, String phone, int classInfoId, String building, int domNumber, int bedNumber, String password, String confirmPass) {
@@ -77,7 +78,18 @@ public class RegisterServiceImpl extends BaseServiceImpl implements RegisterServ
 
     @Override
     public int teacherRegister(String teacherName,String phone,String password, String confirmPass) {
+//        ClassInfo classInfo=classInfoRepository.getOne(1);
 
+        TeacherInfo teacherInfo=new TeacherInfo();
+        teacherInfoRepository.save(teacherInfo);
+
+        User user=new User();
+        user.setPassword(password);
+        user.setPhone(phone);
+        user.setUsername(teacherName);
+        user.setRole(roleRepository.findByName("教师"));
+        user.setTeacherInfo(teacherInfo);
+        userRepository.save(user);
 
         return 0;
     }

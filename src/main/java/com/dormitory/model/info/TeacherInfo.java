@@ -12,10 +12,8 @@ import java.util.Set;
 @Table(name = "teach_info")
 public class TeacherInfo extends AbstractModel {
 
-//    @ManyToOne
-//    private ClassInfo classInfo;
 
-    @OneToMany
-    private Set<ClassInfo> classInfos;
+//    @OneToMany
+//    private Set<ClassInfo> classInfos;
 }
 

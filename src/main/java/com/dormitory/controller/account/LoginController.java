@@ -47,7 +47,7 @@ public class LoginController {
             Subject currentUser = SecurityUtils.getSubject();
             String username = param.getString("username");
             String password = param.getString("password");
-            logger.info("userName:" + username);
+            logger.info("username:" + username);
             logger.info("password:" + password);
             //检测身份是否合理
             if (username == null || username.trim().length() == 0 || password == null || password.trim().length() == 0) {
@@ -87,6 +87,8 @@ public class LoginController {
                 SessionVO svo = buildUserSessionVO(user);
                 session.setAttribute(SESSION_VO_STR, svo);
 
+                System.out.println(session.getAttribute(SESSION_VO_STR));
+
                 //设置cookie
                 this.addCookie(request, response, COOKIE_MEMBER_ACCOUNT, username, COOKIE_MAX_DURATION);
             } else {
@@ -105,9 +107,9 @@ public class LoginController {
         svo.setSvoId(user.getId());
         svo.setSvoName(user.getUsername());
         svo.setSvoRoleId(user.getRole().getId());
-        svo.setSvoPermissionId(user.getPermission().getId());
+//        svo.setSvoPermissionId(user.getPermission().getId());
         svo.setSvoUsername(user.getUsername());
-        svo.setType(user.getPermission().getType());
+//        svo.setType(user.getPermission().getType());
         return svo;
     }
 
