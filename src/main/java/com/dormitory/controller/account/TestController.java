@@ -261,7 +261,7 @@ public class TestController {
         studentInfo.setDomNumber(1);
         studentInfo.setBedNumber(1);
         studentInfo.setBuilding("1");
-        studentInfo.setStudentCode("1");
+        studentInfo.setStudentCode("2");
         studentInfo.setClassInfo(classInfoRepository.getOne(1));
         StudentInfo s = studentInfoRepository.save(studentInfo);
 
@@ -360,7 +360,7 @@ public class TestController {
         askForLeave.setBeginMonth(5);
         askForLeave.setBeginDay(7);
         askForLeave.setLeaveReasonText("go home");
-        askForLeave.setReplyText("admit");
+        askForLeave.setReplyText("fff");
         askForLeave.setIsHandle(1);
         askForLeave.setEndYear(2020);
         askForLeave.setEndMonth(5);

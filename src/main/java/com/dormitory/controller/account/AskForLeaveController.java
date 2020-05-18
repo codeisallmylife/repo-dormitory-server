@@ -2,10 +2,13 @@ package com.dormitory.controller.account;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dormitory.dao.account.AskForLeaveRepository;
+import com.dormitory.dao.account.TeacherInfoRepository;
 import com.dormitory.dao.account.UserRepository;
 import com.dormitory.dto.SessionVO;
+import com.dormitory.model.info.TeacherInfo;
 import com.dormitory.model.log.AskForLeave;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,15 +38,22 @@ public class AskForLeaveController {
     @Autowired
     UserRepository userRepository;
 
+
     //学生功能: 请假记录
     @RequestMapping(value = "/getStuRecord")
-    public List  getStuRecord(@RequestBody JSONObject param, HttpServletRequest request, HttpServletResponse respons){
-        logger.info("-= enter stuRegister =-");
+    public List getStuRecord(@RequestBody JSONObject param, HttpServletRequest request, HttpServletResponse respons){
+        logger.info("-= enter getStuRecord=-");
         List<AskForLeave>  askForLeaveList=new ArrayList<>();
         askForLeaveList= (List<AskForLeave>) askForLeaveRepository.findAll();
+        logger.info("SvoID: "+getSvo(request).getSvoId());
 
         for(AskForLeave askForLeave: askForLeaveList){
-            System.out.println("aflID: "+askForLeave.getId());
+            if (askForLeave.getStudentInfo().getId()==getSvo(request).getRealId()) {
+                logger.info("teacherId:" + userRepository.findOne(askForLeave.getTeacherInfo().getId()).getUsername());
+                logger.info("replyText:" + askForLeave.getReplyText());
+                logger.info("isHandle:" + askForLeave.getIsHandle());
+                logger.info("Time:" + String.valueOf(askForLeave.getUpdated()).substring(5, 16));
+            }
         }
 
 

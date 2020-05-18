@@ -22,6 +22,10 @@ public class SessionVO implements HttpSessionBindingListener, Serializable {
      * member实体类的ID
      */
     private int svoId;
+    /**
+     * 学生/教师的ID
+     */
+    private int realId;
 
     /**
      * 名字

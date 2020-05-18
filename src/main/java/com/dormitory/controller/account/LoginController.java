@@ -79,6 +79,7 @@ public class LoginController {
                 logger.info("enter stage 6");
                 json.putData(user);
                 json.putData("sessionId", currentUser.getSession().getId());
+                json.putData("realId", user.getId());
                 json.putData("permissions", roleActionRepository.listActionTypesByRoleId(user.getRole().getId()));
                 json.putData("visibleType", user.getPermission()!=null?user.getPermission().getType():null);
 
@@ -104,6 +105,12 @@ public class LoginController {
 
     private SessionVO buildUserSessionVO(User user) {
         SessionVO svo = new SessionVO();
+        if (user.getRole().getId()==2){
+            svo.setRealId(user.getStudentInfo().getId());
+        }
+        if (user.getRole().getId()==3){
+            svo.setRealId(user.getTeacherInfo().getId());
+        }
         svo.setSvoId(user.getId());
         svo.setSvoName(user.getUsername());
         svo.setSvoRoleId(user.getRole().getId());
