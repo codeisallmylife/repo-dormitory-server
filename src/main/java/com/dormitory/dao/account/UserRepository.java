@@ -2,6 +2,7 @@ package com.dormitory.dao.account;
 
 import com.dormitory.dao.BaseRepository;
 import com.dormitory.model.account.User;
+import com.dormitory.model.info.StudentInfo;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,8 @@ public interface UserRepository extends BaseRepository<User> {
     User findByUsername(@Param("username") String username);
 
     List<User> findByPhoneIs(String phone);
+
+    User findByStudentInfoIdIs(int studentInfoId);
 
 
 

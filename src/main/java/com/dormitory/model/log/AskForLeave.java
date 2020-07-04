@@ -4,6 +4,7 @@ import com.dormitory.model.AbstractModel;
 import com.dormitory.model.info.StudentInfo;
 import com.dormitory.model.info.TeacherInfo;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 @Table(name = "dom_ask_for_leave")
 @Data
 @Entity
+@Accessors(chain = true)
 public class AskForLeave extends AbstractModel {
 
     @ManyToOne

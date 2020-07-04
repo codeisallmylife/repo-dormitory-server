@@ -43,6 +43,7 @@ public class ShiroConfiguration {
         // 拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断
+        filterChainDefinitionMap.put("/**", "anon");
         filterChainDefinitionMap.put("/LoginController/**", "anon");
         filterChainDefinitionMap.put("/MapController/**", "anon");
         filterChainDefinitionMap.put("/RegisterController/**", "anon");

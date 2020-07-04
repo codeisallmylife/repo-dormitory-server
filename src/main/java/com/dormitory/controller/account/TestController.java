@@ -26,6 +26,18 @@ import static com.dormitory.util.CodeConst.SESSION_VO_STR;
 
 /**
  * 此类为测试鉴权内容写入，执行时按照接口前注释所写的step顺序调用
+ *
+ * /account/test/
+ * /account/test/testCreateRole
+ * /account/test/testCreateSysRoleAction
+ * /account/test/testCreateRoleAction
+ * /account/test/testCreatePermission
+ * /account/test/testCreateClass
+ * /account/test/testCreateUser
+ * /LoginController/login
+ * /account/test/createSignLog
+ * /account/test/createAskForLeave
+ *
  */
 
 @RestController
@@ -222,7 +234,7 @@ public class TestController {
         AjaxResponse json = AjaxResponse.buildSuccessResponse();
 
         ClassInfo classInfo = new ClassInfo();
-        classInfo.setClassName("二班");
+        classInfo.setClassName("1班");
 
         classInfoRepository.save(classInfo);
 
@@ -366,10 +378,13 @@ public class TestController {
         askForLeave.setEndMonth(5);
         askForLeave.setEndDay(8);
 
-        ClassInfo claz=classInfoRepository.getOne(userRepository.getOne(sessionVO.getSvoId()).getStudentInfo().getClassInfo().getId());
 
-        askForLeave.setStudentInfo(userRepository.getOne(sessionVO.getSvoId()).getStudentInfo());
+        ClassInfo claz=classInfoRepository.getOne(studentInfoRepository.getOne(sessionVO.getRealId()).getClassInfo().getId());
+        askForLeave.setStudentInfo(studentInfoRepository.getOne(sessionVO.getRealId()));
         askForLeave.setTeacherInfo(claz.getTeacherInfo());
+
+
+
 
         askForLeaves.add(askForLeave);
 

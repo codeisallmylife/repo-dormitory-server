@@ -7,6 +7,8 @@ import com.dormitory.dao.account.UserRepository;
 import com.dormitory.dto.SessionVO;
 import com.dormitory.model.info.TeacherInfo;
 import com.dormitory.model.log.AskForLeave;
+import com.dormitory.service.account.AskForLeaveService;
+import com.dormitory.service.account.impl.AskForLeaeveServiceImpl;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,32 +37,23 @@ public class AskForLeaveController {
     @Autowired
     AskForLeaveRepository askForLeaveRepository;
 
-    @Autowired
-    UserRepository userRepository;
 
+    @Autowired
+    AskForLeaveService askForLeaveService=new AskForLeaeveServiceImpl();
 
     //学生功能: 请假记录
     @RequestMapping(value = "/getStuRecord")
     public List getStuRecord(@RequestBody JSONObject param, HttpServletRequest request, HttpServletResponse respons){
         logger.info("-= enter getStuRecord=-");
-        List<AskForLeave>  askForLeaveList=new ArrayList<>();
-        askForLeaveList= (List<AskForLeave>) askForLeaveRepository.findAll();
-        logger.info("SvoID: "+getSvo(request).getSvoId());
 
-        for(AskForLeave askForLeave: askForLeaveList){
-            if (askForLeave.getStudentInfo().getId()==getSvo(request).getRealId()) {
-                logger.info("teacherId:" + userRepository.findOne(askForLeave.getTeacherInfo().getId()).getUsername());
-                logger.info("replyText:" + askForLeave.getReplyText());
-                logger.info("isHandle:" + askForLeave.getIsHandle());
-                logger.info("Time:" + String.valueOf(askForLeave.getUpdated()).substring(5, 16));
-            }
-        }
+        List<AskForLeave>  askForLeaveList=askForLeaveRepository.findAll();
+
+        List newLi=askForLeaveService.getStuRecord(askForLeaveList,request);
 
 
-        return askForLeaveList;
+
+        return newLi;
     }
 
-    public SessionVO getSvo(HttpServletRequest request) {
-        return (SessionVO) request.getSession().getAttribute(SESSION_VO_STR);
-    }
+
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 public class TeacherInfo extends AbstractModel {
 
 
-//    @OneToMany
-//    private Set<ClassInfo> classInfos;
+    private String boardContent;
+
 }
 
